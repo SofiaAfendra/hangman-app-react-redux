@@ -1,58 +1,47 @@
-import { GUESS_LETTER, RESTART_GAME, FETCH_WORD } from './actionTypes'
+import { RESTART_GAME, FETCH_WORD, GUESS_WRONGLY, GUESS_CORRECTLY, SHOW_GUESSES, CHANGE_STATUS } from './actionTypes'
 
 const initialState = {
     word: '',
     guesses: [],
     wrongGuesses: 0,
-    status: "player"
+    status: "pending"
 }
 
 initialState.format = Array(initialState.word.length).fill("_").join(" ")
 
 export default (state = initialState, { type, payload }) => {
 
-    const { word, guesses } = state
-
-    const wrongGuessCounter = (word, guesses) => {
-        let wrongGuess = []
-        guesses.map(guess => word.indexOf(guess) === -1 ? wrongGuess.push(guess) : wrongGuess)
-        return wrongGuess.length
-    }
-
-    const correctGuess = (word, guesses) => {
-        let guessed = []
-        const wordLetters = word.split("")
-        wordLetters.map(letter => guesses.indexOf(letter) !== -1 ? guessed.push(letter) : guessed.push('_'))
-        return guessed.join(" ")
-    }
-
-    const isWinner = (word, guesses) => {
-        const countFails = wrongGuessCounter(word, guesses)
-        const rightGuesses = correctGuess(word, guesses)
-        const newWord = word.split("").join(" ")
-        return countFails < 6 && rightGuesses === newWord ? "winner!"
-            : countFails < 6 ? "player"
-                : "you killed me, loser!"
-    }
-
     switch (type) {
-        case GUESS_LETTER:
-            let newGuesses = [...guesses, payload]
-            let newWrongGuessCounter = wrongGuessCounter(word, newGuesses)
-            let newCorrectGuess = correctGuess(word, newGuesses)
-            return ({
-                word,
-                format: newCorrectGuess,
-                guesses: newGuesses,
-                wrongGuesses: newWrongGuessCounter,
-                status: isWinner(word, newGuesses)
-            })
-
         case FETCH_WORD:
             return ({
                 ...state,
                 word: payload,
-                format: Array(payload.length).fill("_").join(" ")
+                format: Array(payload.length).fill("_").join(" "),
+                status: "player"
+            })
+
+        case GUESS_WRONGLY:
+            return ({
+                ...state,
+                wrongGuesses: payload
+            })
+
+        case GUESS_CORRECTLY:
+            return ({
+                ...state,
+                format: payload
+            })
+
+        case SHOW_GUESSES:
+            return ({
+                ...state,
+                guesses: payload
+            })
+
+        case CHANGE_STATUS:
+            return ({
+                ...state,
+                status: payload
             })
 
         case RESTART_GAME:

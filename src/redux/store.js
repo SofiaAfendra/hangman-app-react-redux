@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { createEpicMiddleware } from "redux-observable"
 import reducer from './reducer'
-import { epicFetchWords } from "./epic"
+import rootEpic from "./epic"
 
 const epicMiddleware = createEpicMiddleware()
 
@@ -10,4 +10,4 @@ export const store = configureStore({
     middleware: [epicMiddleware]
 })
 
-epicMiddleware.run(epicFetchWords)
+epicMiddleware.run(rootEpic)

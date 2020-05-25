@@ -13,7 +13,7 @@ const Buttons = ({ guessLetter, startGame, status }) => {
         return (<button
             key={letter}
             onClick={() => handleClick(letter)}
-            disabled={status === "winner!" || status === "you killed me, loser!"}
+            disabled={status === "pending" || status === "winner!" || status === "you killed me, loser!"}
         >
             {letter}
         </button>)
@@ -21,7 +21,11 @@ const Buttons = ({ guessLetter, startGame, status }) => {
 
     return (
         <div>
-            <button onClick={startGame}> Start Game </button>
+            <button onClick={startGame}
+                disabled={status === "player" || status === "winner!" || status === "you killed me, loser!"}
+            >
+                Start Game
+            </button>
             <br />
             <br />
             {letters.map(letter => renderLetter(letter))}
