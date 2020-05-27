@@ -1,4 +1,4 @@
-import { RESTART_GAME, FETCH_WORD, GUESS_WRONGLY, GUESS_CORRECTLY, SHOW_GUESSES, CHANGE_STATUS } from './actionTypes'
+import { RESTART_GAME, FETCH_WORD, GUESS_WRONGLY, SHOW_GUESSES, CHANGE_STATUS, CHANGE_FORMAT } from './actionTypes'
 
 const initialState = {
     word: '',
@@ -10,6 +10,7 @@ const initialState = {
 initialState.format = Array(initialState.word.length).fill("_").join(" ")
 
 export default (state = initialState, { type, payload }) => {
+    const { wrongGuesses } = state
 
     switch (type) {
         case FETCH_WORD:
@@ -23,10 +24,10 @@ export default (state = initialState, { type, payload }) => {
         case GUESS_WRONGLY:
             return ({
                 ...state,
-                wrongGuesses: payload
+                wrongGuesses: wrongGuesses + 1
             })
 
-        case GUESS_CORRECTLY:
+        case CHANGE_FORMAT:
             return ({
                 ...state,
                 format: payload

@@ -1,8 +1,8 @@
 import { ofType, combineEpics } from "redux-observable"
 import { mergeMap, map } from "rxjs/operators"
 import { ajax } from "rxjs/ajax"
-import { fetchWord, guessWrongly, guessCorrectly, showGuesses, changeStatus } from "./actions"
-import { START_GAME, GUESS_LETTER } from "./actionTypes"
+import { fetchWord, guessWrongly, showGuesses, changeStatus, changeFormat, guessCorrectly } from "./actions"
+import { START_GAME, GUESS_LETTER, GUESS_CORRECTLY } from "./actionTypes"
 
 const fetchWordEpic = action$ =>
     action$.pipe(
@@ -16,21 +16,19 @@ const fetchWordEpic = action$ =>
 const guessWronglyEpic = (action$, state$) =>
     action$.pipe(
         ofType(GUESS_LETTER),
-        map(({ payload }) => {
+        mergeMap(({ payload }) => {
             const { word, guesses } = state$.value
-            const wrongGuessCounter = (word, guesses) => {
-                let wrongGuess = []
-                guesses.map(guess => word.indexOf(guess) === -1 ? wrongGuess.push(guess) : wrongGuess)
-                return wrongGuess.length
+            if (!word.includes(payload)) {
+                return [guessWrongly(), showGuesses([...guesses, payload])]
             }
-            let newGuesses = [...guesses, payload]
-            return guessWrongly(wrongGuessCounter(word, newGuesses))
-        })
+            return [guessCorrectly(payload), showGuesses([...guesses, payload])]
+        }
+        )
     )
 
 const guessCorrectlyEpic = (action$, state$) =>
     action$.pipe(
-        ofType(GUESS_LETTER),
+        ofType(GUESS_CORRECTLY),
         map(({ payload }) => {
             const { word, guesses } = state$.value
             const correctGuess = (word, guesses) => {
@@ -40,16 +38,7 @@ const guessCorrectlyEpic = (action$, state$) =>
                 return guessed.join(" ")
             }
             let newGuesses = [...guesses, payload]
-            return guessCorrectly(correctGuess(word, newGuesses))
-        })
-    )
-
-const showGuessesEpic = (action$, state$) =>
-    action$.pipe(
-        ofType(GUESS_LETTER),
-        map(({ payload }) => {
-            const { guesses } = state$.value
-            return showGuesses([...guesses, payload])
+            return changeFormat(correctGuess(word, newGuesses))
         })
     )
 
@@ -72,6 +61,5 @@ export default combineEpics(
     fetchWordEpic,
     guessWronglyEpic,
     guessCorrectlyEpic,
-    showGuessesEpic,
     changeStatusEpic
 )

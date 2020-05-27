@@ -1,4 +1,4 @@
-import { GUESS_LETTER, RESTART_GAME, FETCH_WORD, START_GAME, GUESS_WRONGLY, GUESS_CORRECTLY, SHOW_GUESSES, CHANGE_STATUS } from "./actionTypes"
+import { GUESS_LETTER, RESTART_GAME, FETCH_WORD, START_GAME, GUESS_WRONGLY, GUESS_CORRECTLY, SHOW_GUESSES, CHANGE_STATUS, CHANGE_FORMAT } from "./actionTypes"
 
 export const guessLetter = letter => ({
     type: GUESS_LETTER,
@@ -18,9 +18,8 @@ export const startGame = () => ({
     type: START_GAME
 })
 
-export const guessWrongly = wrongTries => ({
+export const guessWrongly = () => ({
     type: GUESS_WRONGLY,
-    payload: wrongTries
 })
 
 export const guessCorrectly = correctLetter => ({
@@ -36,4 +35,9 @@ export const showGuesses = guesses => ({
 export const changeStatus = playerStatus => ({
     type: CHANGE_STATUS,
     payload: playerStatus
+})
+
+export const changeFormat = newFormat => ({
+    type: CHANGE_FORMAT,
+    payload: newFormat
 })
