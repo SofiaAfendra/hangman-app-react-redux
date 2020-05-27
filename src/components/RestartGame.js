@@ -5,7 +5,7 @@ import { restartGame } from '../redux/actions'
 const RestartGame = ({ restartGame }) => {
     return (
         <button onClick={() => restartGame()}>
-            Restart Game
+            Restart
         </button>
     )
 }

@@ -1,9 +1,9 @@
 import React from "react"
 import { connect } from 'react-redux'
-import { guessLetter, startGame } from "../redux/actions"
+import { guessLetter, startGame, setStatus } from "../redux/actions"
 import { letters } from "../constants"
 
-const Buttons = ({ guessLetter, startGame, status }) => {
+const Buttons = ({ guessLetter, startGame, status, setStatus }) => {
 
     const handleClick = (letter) => {
         guessLetter(letter)
@@ -12,7 +12,7 @@ const Buttons = ({ guessLetter, startGame, status }) => {
     const renderLetter = letter => {
         return (<button
             key={letter}
-            onClick={() => handleClick(letter)}
+            onClick={() => [handleClick(letter), setStatus()]}
             disabled={status === "pending" || status === "winner!" || status === "you killed me, loser!"}
         >
             {letter}
@@ -35,4 +35,4 @@ const Buttons = ({ guessLetter, startGame, status }) => {
 
 const mapStateToProps = ({ status }) => ({ status })
 
-export default connect(mapStateToProps, { guessLetter, startGame })(Buttons)
+export default connect(mapStateToProps, { guessLetter, startGame, setStatus })(Buttons)

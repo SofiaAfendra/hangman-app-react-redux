@@ -2,7 +2,7 @@ import { ofType, combineEpics } from "redux-observable"
 import { mergeMap, map } from "rxjs/operators"
 import { ajax } from "rxjs/ajax"
 import { fetchWord, guessWrongly, showGuesses, changeStatus, changeFormat, guessCorrectly } from "./actions"
-import { START_GAME, GUESS_LETTER, GUESS_CORRECTLY } from "./actionTypes"
+import { START_GAME, GUESS_LETTER, GUESS_CORRECTLY, SET_STATUS } from "./actionTypes"
 
 const fetchWordEpic = action$ =>
     action$.pipe(
@@ -44,7 +44,7 @@ const guessCorrectlyEpic = (action$, state$) =>
 
 const changeStatusEpic = (action$, state$) =>
     action$.pipe(
-        ofType(GUESS_LETTER),
+        ofType(SET_STATUS),
         map(() => {
             const { word, format, wrongGuesses } = state$.value
             const isWinner = (word, format, wrongGuesses) => {
