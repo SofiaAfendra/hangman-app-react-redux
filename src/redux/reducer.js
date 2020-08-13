@@ -4,7 +4,7 @@ const initialState = {
     word: '',
     guesses: [],
     wrongGuesses: 0,
-    status: "pending"
+    status: "pending..."
 }
 
 initialState.format = Array(initialState.word.length).fill("_").join(" ")

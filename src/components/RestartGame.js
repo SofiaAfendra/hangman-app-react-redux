@@ -2,12 +2,16 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { restartGame } from '../redux/actions'
 
-const RestartGame = ({ restartGame }) => {
+const RestartGame = ({ restartGame, status }) => {
     return (
-        <button onClick={() => restartGame()}>
-            Restart
+        <div className='restartButtonContainer'>
+            <button className='restartButton'
+                onClick={() => restartGame()} disabled={status === "pending..."}>
+                Restart
         </button>
+        </div>
     )
 }
 
-export default connect(null, { restartGame })(RestartGame)
+const mapStateToProps = ({ status }) => ({ status })
+export default connect(mapStateToProps, { restartGame })(RestartGame)

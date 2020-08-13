@@ -1,14 +1,15 @@
 import React from "react"
 import { connect } from "react-redux"
+import './app.css'
 
 const Game = ({ wrongGuesses, format, guesses, status }) => {
     return (
-        <div>
+        <div className='gameStatusContainer'>
             <p>
                 Wrong guesses: {wrongGuesses}
             </p>
             <p>
-                And the word is: {format}
+                The deadly word: {format}
             </p>
             <p>
                 Your guesses: {guesses}

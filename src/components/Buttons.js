@@ -11,23 +11,24 @@ const Buttons = ({ guessLetter, startGame, status, setStatus }) => {
 
     const renderLetter = letter => {
         return (<button
+            className='letters'
+            id={`letter${letter}`}
             key={letter}
             onClick={() => [handleClick(letter), setStatus()]}
-            disabled={status === "pending" || status === "winner!" || status === "you killed me, loser!"}
+            disabled={status === "pending..." || status === "winner!" || status === "you killed me, loser!"}
         >
             {letter}
         </button>)
     }
 
     return (
-        <div>
-            <button onClick={startGame}
+        <div className='gameButtonsContainer'>
+            <button className='startButton'
+                onClick={startGame}
                 disabled={status === "player" || status === "winner!" || status === "you killed me, loser!"}
             >
                 Start Game
             </button>
-            <br />
-            <br />
             {letters.map(letter => renderLetter(letter))}
         </div>
     )

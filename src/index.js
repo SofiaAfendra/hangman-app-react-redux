@@ -1,17 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
-import Buttons from './components/Buttons'
-import Game from './components/Game'
 import { store } from './redux/store'
-import RestartGame from './components/RestartGame';
+import App from './components/App';
 
 ReactDOM.render(
     <Provider store={store}>
-        <Game />
-        <Buttons />
-        <br />
-        <RestartGame />
+        <App />
     </Provider>,
     document.getElementById('root')
 );
